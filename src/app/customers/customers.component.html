@@ -1,23 +1,42 @@
+
 <div class="container mt-2">
-    <div class="card" *ngIf="customers">
-        <div class="card-header">Customers</div>
-        <div class="card-body">
-            <table class="table">
-                <thead>
-                    <tr>
-                        <th>ID</th>
-                        <th>Name</th>
-                        <th>Email</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr *ngFor="let i of customers"> 
-                        <td>{{i.id}}</td>
-                        <td>{{i.name}}</td>
-                        <td>{{i.email}}</td>
-                    </tr>
-                </tbody>
-            </table>
+    <ng-container *ngIf="customers | async as listeCustomers; else errorsorLoading">
+        <div class="card">
+            <div class="card-header">Customers</div>
+            <div class="card-body">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Name</th>
+                            <th>Email</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let i of customers | async"> 
+                            <td>{{i.id}}</td>
+                            <td>{{i.name}}</td>
+                            <td>{{i.email}}</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
         </div>
-    </div>
+    </ng-container>
+
+
+    <ng-template #errorsorLoading>
+        <ng-container *ngIf="errorMessage else loading" >
+          <div class="text-danger">
+            {{errorMessage}}
+           </div>
+        </ng-container>
+        <ng-template #loading>
+            <div class="loading">Loading&#8230;</div>
+        </ng-template>
+    </ng-template>
+
+    <!-- <ng-template #errorsorLoading>
+        <div class="loading">Loading&#8230;</div>
+    </ng-template> -->
 </div>
