@@ -18,4 +18,8 @@ export class CustomerService {
       return this.http.get<Customer[]>('http://localhost:8090/customers')
    }
 
+   public searchCustomers(keyword:string):Observable<Customer[]>{
+      return this.http.get<Customer[]>(`http://localhost:8090/customers/search?keyword=${keyword}`)
+   }
+
 }
