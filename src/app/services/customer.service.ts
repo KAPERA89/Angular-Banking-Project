@@ -22,4 +22,9 @@ export class CustomerService {
       return this.http.get<Customer[]>(`http://localhost:8090/customers/search?keyword=${keyword}`)
    }
 
+   public saveCustomer(customer:Customer):Observable<Customer>{
+      return this.http.post<Customer>('http://localhost:8090/customers/',customer)
+   }
+
+
 }
