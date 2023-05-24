@@ -22,7 +22,7 @@ export class NewCustomerComponent implements OnInit{
 
   saveNewCustomer(){
       let customer= this.newCustomerFormGroup.value;
-
+      console.log(customer)
       this.customerService.saveCustomer(customer).subscribe({
         next : data => {alert("Customer created successfully")},
         error : err => console.log(err)
