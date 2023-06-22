@@ -1,8 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { AccountsService } from '../services/accounts.service';
-import { Observable } from 'rxjs';
+import { Observable, catchError, throwError } from 'rxjs';
 import { AccountDetails } from '../model/account.model';
+import { Customer } from '../model/customer.model';
 
 @Component({
   selector: 'app-accounts',
@@ -16,7 +17,8 @@ export class AccountsComponent implements OnInit{
   pageSize : number = 5;
   accountObservable! : Observable<AccountDetails>
   // account$! : Observable<AccountDetails> dollar signifie observable 
-  operationsFormGroup! : FormGroup 
+  operationsFormGroup! : FormGroup;
+  errorMessage!: string;
 
   constructor(private fb:FormBuilder, private accountService: AccountsService) {}
 
@@ -35,7 +37,12 @@ export class AccountsComponent implements OnInit{
 
   handleSearchAccount() {
     let accountId: string = this.accountFormGroup.value.accountId
-     this.accountObservable = this.accountService.getAccount(accountId, this.currentPage, this.pageSize);
+     this.accountObservable = this.accountService.getAccount(accountId, this.currentPage, this.pageSize).pipe(
+      catchError(err => {
+        this.errorMessage = err.message;
+        return throwError(err);
+      })
+     );
     }
 
   goToPage(page: number){
@@ -110,4 +117,6 @@ export class AccountsComponent implements OnInit{
         }
       }
     }
+
+   
 }

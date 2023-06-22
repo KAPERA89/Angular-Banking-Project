@@ -5,6 +5,7 @@ import { Observable, throwError } from 'rxjs';
 import { Customer } from '../model/customer.model';
 import { catchError, map } from 'rxjs/operators'
 import { FormBuilder, FormGroup } from '@angular/forms';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-customers',
@@ -13,12 +14,13 @@ import { FormBuilder, FormGroup } from '@angular/forms';
 })
 export class CustomersComponent implements OnInit{
 
+
   customers! : Observable<Customer[]>
   errorMessage : string | undefined
   searchFormGroup : FormGroup | undefined
 
 
-  constructor(private customerService:CustomerService, private fb:FormBuilder){}
+  constructor(private customerService:CustomerService, private fb:FormBuilder, private router:Router){}
 
   ngOnInit(): void {  
 
@@ -68,8 +70,13 @@ export class CustomersComponent implements OnInit{
         error: err => {
           console.log(err)
         }
-      })
+      })  
   }
+
+  handleCustomerAccounts(customer: Customer) {
+    this.router.navigateByUrl("/customer-accounts/"+customer.id, {state: customer});
+  }
+  
 }
 
 
